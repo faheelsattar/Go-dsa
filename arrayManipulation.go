@@ -1,38 +1,65 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 //----> NOT OPTIMIZED <-----
-func arrayManipulation(n int32, queries [][]int32) int64 {
-	// Write your code here
-	var i int32
-	var j int32
-	var max int64
-	data := make([][]int32, n)
-	for i = 0; i < n; i++ {
-		data[0] = append(data[0], 0)
-	}
+// func arrayManipulation(n int, queries [][]int) int {
+// 	// Write your code here
+// 	var i int
+// 	var j int
+// 	var max int
+// 	data := make([][]int, n)
+// 	for i = 0; i < n; i++ {
+// 		data[0] = append(data[0], 0)
+// 	}
+
+// 	for i := 0; i < len(queries); i++ {
+// 		row := queries[i]
+// 		a := row[0]
+// 		b := row[1]
+// 		k := row[2]
+// 		data[i+1] = append(data[i+1], data[i]...)
+// 		for j = a - 1; j < b; j++ {
+// 			data[i+1][j] = data[i+1][j] + k
+// 			if data[i+1][j] > int(max) {
+// 				max = int(data[i+1][j])
+// 			}
+// 		}
+// 	}
+
+// 	fmt.Println("data", data)
+// 	return max
+// }
+
+func arrayManipulation(n int, queries [][]int) int {
+	arr := make([]int, n)
+	var max int = 0
+	var curr int = 0
 
 	for i := 0; i < len(queries); i++ {
 		row := queries[i]
-		a := row[0]
-		b := row[1]
+		a := row[0] - 1
+		b := row[1] - 1
 		k := row[2]
-		data[i+1] = append(data[i+1], data[i]...)
-		for j = a - 1; j < b; j++ {
-			data[i+1][j] = data[i+1][j] + k
-			if data[i+1][j] > int32(max) {
-				max = int64(data[i+1][j])
-			}
+		arr[a] += k
+		if b+1 < int(len(arr)) {
+			arr[b+1] -= k
 		}
 	}
 
-	fmt.Println("data", data)
+	for i := 0; i < int(n); i++ {
+		curr += arr[i]
+		if curr > int(max) {
+			max = int(curr)
+		}
+	}
 	return max
 }
 
 func main() {
-	var a = [][]int32{
+	var a = [][]int{
 		{1, 5, 3},
 		{4, 8, 7},
 		{6, 9, 1},
